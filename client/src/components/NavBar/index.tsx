@@ -7,8 +7,8 @@ import { AppBar, Container, Toolbar } from "@mui/material";
 const NavBar = () => {
   const { userStore } = useStore();
   return (
-    <AppBar position="sticky">
-      <Container maxWidth="xl" disableGutters sx={{p: 1}}>
+    <AppBar sx={{p: 1, borderRadius: "5px", position: "sticky"}}>
+      <Container maxWidth="xl" disableGutters>
         <Toolbar disableGutters>
           {!userStore.isLogged ? <NavBarPublic /> : <NavBarAuth role={userStore.userData?.role}/>}
         </Toolbar>

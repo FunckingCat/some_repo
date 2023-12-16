@@ -88,21 +88,25 @@ const Profile = (props: Props) => {
 
   return (
     <>
-      <Box sx={{ textAlign: "center" }}>
-        <Typography component="h1" variant="h2">
-          Hi, {userStore.userData.firstName}!
-        </Typography>
-        <Typography variant="overline" gutterBottom>
-          Welcome to AMONIC Airlines
-        </Typography>
+      <Box sx = {{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginBottom: "1rem" }}>
+        <Box>
+          <Box>
+            Hi, {userStore.userData.firstName}!
+          </Box>
+          <Box>
+            Welcome to AMONIC Airlines
+          </Box>
+        </Box>
+        <Box>
+          <Box>
+            Current session: {currentSessionTime}
+          </Box>
+          <Box>
+            Number of crashes: {userStore.profileData.numberOfCrashes}
+          </Box>
+        </Box>
       </Box>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <Typography gutterBottom>
-          Current session: {currentSessionTime}
-        </Typography>
-        <Typography gutterBottom>
-          Number of crashes: {userStore.profileData.numberOfCrashes}
-        </Typography>
         <DataGrid
           rows={toJS(userStore.profileData.userLogins || [])}
           columns={columns}

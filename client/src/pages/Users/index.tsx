@@ -24,7 +24,8 @@ const Users = (props: Props) => {
   const { userStore } = useStore();
 
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 30, hide: true },
+    { field: "id", headerName: "ID", width: 30 },
+    { field: "email", headerName: "Email address", flex: 1, minWidth: 70 },
     { field: "firstName", headerName: "First name", width: 130 },
     { field: "lastName", headerName: "Last name", width: 130 },
     { field: "age", type: "number", headerName: "Age", width: 90 },
@@ -47,7 +48,6 @@ const Users = (props: Props) => {
       valueGetter: (params: GridValueGetterParams) =>
         params.row.roleId.toString(),
     },
-    { field: "email", headerName: "Email address", flex: 1, minWidth: 100 },
     {
       field: "officeId",
       headerName: "Office",
@@ -85,6 +85,19 @@ const Users = (props: Props) => {
 
   return (
     <>
+      <Box>
+        <Box sx = {{ display: "flex", flexDirection: "row", marginBottom: "1rem" }}>
+          <Button color="info" variant="contained" onClick={() => { setDialogModel("add"); }} >
+            Add user
+          </Button>
+          <Button color="warning" variant="contained" onClick={() => { setDialogModel("change"); }} sx={{ marginX: '1rem', display: selectionModel[0] ? 'block' : 'none' }}>
+            Change role
+          </Button>
+          <Button color={ userStore.userByID(selectionModel[0])?.active ? "error" : "success" } variant="contained" onClick={() => userStore.switchActive(selectionModel[0])} sx={{ display: selectionModel[0] ? 'block' : 'none' }}>
+            {userStore.userByID(selectionModel[0])?.active ? "Disable" : "Enable"}
+          </Button>
+        </Box>
+      </Box>
       <DataGrid
         rows={toJS(userStore.users)}
         columns={columns}
@@ -101,51 +114,6 @@ const Users = (props: Props) => {
             <GridToolbarContainer
               sx={{ justifyContent: "space-between", gap: 2 }}
             >
-              <Button
-                color="info"
-                variant="contained"
-                onClick={() => {
-                  setDialogModel("add");
-                }}
-              >
-                Add user
-              </Button>
-              <Typography align="center" variant="h5">
-                Users
-              </Typography>
-              <Box
-                display="flex"
-                gap={3}
-                sx={{
-                  overflow: "hidden",
-                  textAlign: "center",
-                  width: !selectionModel.length ? "0px" : undefined,
-                  height: !selectionModel.length ? "0px" : undefined,
-                }}
-              >
-                <Button
-                  color="warning"
-                  variant="contained"
-                  onClick={() => {
-                    setDialogModel("change");
-                  }}
-                >
-                  Change role
-                </Button>
-                <Button
-                  color={
-                    userStore.userByID(selectionModel[0])?.active
-                      ? "error"
-                      : "success"
-                  }
-                  variant="contained"
-                  onClick={() => userStore.switchActive(selectionModel[0])}
-                >
-                  {userStore.userByID(selectionModel[0])?.active
-                    ? "Disable"
-                    : "Enable"}
-                </Button>
-              </Box>
             </GridToolbarContainer>
           ),
         }}

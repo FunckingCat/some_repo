@@ -27,17 +27,6 @@ const NavBar = (props: Props) => {
     ].filter(Boolean)
   ;
 
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
-
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
   return (
     <Box sx={{ width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
       <Box>
@@ -66,7 +55,7 @@ const NavBar = (props: Props) => {
           ))}
         </Box>
       </Box>
-      <a href="/"><Image path="logo_colors" hasSet alt="Amonic Airlines Logo" /></a>
+      <Box sx = {{marginRight: "1rem"}}><a href="/"><Image path="logo_colors" hasSet alt="Amonic Airlines Logo"/></a></Box>
     </Box>
   );
 };

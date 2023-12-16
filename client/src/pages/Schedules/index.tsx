@@ -31,8 +31,6 @@ const Schedules = (props: Props) => {
           label: el.name,
         } as ValueOptions)
     );
-  const airportFormatter = (params: GridValueFormatterParams) =>
-    flightStore.airportByID(params.value)?.IATACode;
 
   const currencyFormatter = new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -117,6 +115,51 @@ const Schedules = (props: Props) => {
 
   return (
     <>
+      <Box sx = {{ display: "flex", flexDirection: "row", marginBottom: "1rem" }}>
+        <Button
+          color="info"
+          variant="contained"
+          onClick={() => {
+            setDialogModel("add");
+          }}
+          sx = {{}}
+        >
+          Import schedules
+        </Button>
+        <Button
+          color="warning"
+          variant="contained"
+          onClick={() => {
+            setDialogModel("change");
+          }}
+          sx={{
+            overflow: "hidden",
+            textAlign: "center",
+            marginX: "1rem",
+            display: !selectionModel.length ? "none" : "block",
+          }}
+        >
+          Edit flight
+        </Button>
+        <Button
+          color={
+            flightStore.scheduleByID(selectionModel[0])?.confirmed
+              ? "error"
+              : "success"
+          }
+          variant="contained"
+          onClick={() => flightStore.switchConfirm(selectionModel[0])}
+          sx={{
+            overflow: "hidden",
+            textAlign: "center",
+            display: !selectionModel.length ? "none" : "block",
+          }}
+        >
+          {flightStore.scheduleByID(selectionModel[0])?.confirmed
+            ? "Cancel flight"
+            : "Confirm flight"}
+        </Button>
+      </Box>
       <DataGrid
         rows={toJS(flightStore.schedules)}
         columns={columns}
@@ -127,59 +170,6 @@ const Schedules = (props: Props) => {
         selectionModel={selectionModel}
         onSelectionModelChange={(newModel, opt) => {
           setSelectionModel(newModel);
-        }}
-        components={{
-          Toolbar: () => (
-            <GridToolbarContainer
-              sx={{ justifyContent: "space-between", gap: 2 }}
-            >
-              <Button
-                color="info"
-                variant="contained"
-                onClick={() => {
-                  setDialogModel("add");
-                }}
-              >
-                Import schedules
-              </Button>
-              <Typography align="center" variant="h5">
-                Schedules
-              </Typography>
-              <Box
-                display="flex"
-                gap={3}
-                sx={{
-                  overflow: "hidden",
-                  textAlign: "center",
-                  width: !selectionModel.length ? "0px" : undefined,
-                  height: !selectionModel.length ? "0px" : undefined,
-                }}
-              >
-                <Button
-                  color="warning"
-                  variant="contained"
-                  onClick={() => {
-                    setDialogModel("change");
-                  }}
-                >
-                  Edit flight
-                </Button>
-                <Button
-                  color={
-                    flightStore.scheduleByID(selectionModel[0])?.confirmed
-                      ? "error"
-                      : "success"
-                  }
-                  variant="contained"
-                  onClick={() => flightStore.switchConfirm(selectionModel[0])}
-                >
-                  {flightStore.scheduleByID(selectionModel[0])?.confirmed
-                    ? "Cancel flight"
-                    : "Confirm flight"}
-                </Button>
-              </Box>
-            </GridToolbarContainer>
-          ),
         }}
       />
       <ScheduleForm

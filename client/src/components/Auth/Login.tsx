@@ -44,12 +44,6 @@ const Login = () => {
         width: 400,
       }}
     >
-      <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-        <LockOutlined />
-      </Avatar>
-      <Typography component="h1" variant="h5">
-        Login
-      </Typography>
       <FormContainer formContext={formContext} onSuccess={handleSubmit}>
         <TextFieldElement
           required
@@ -77,7 +71,7 @@ const Login = () => {
             disabled={userStore.status === "forbidden"}
             variant="contained"
           >
-            Sign In
+            Log In
           </LoadingButton>
           <Button component={RouterLink} to="/" variant="contained" color="secondary">Exit</Button>
         </Box>
