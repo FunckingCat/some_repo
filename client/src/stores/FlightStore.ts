@@ -10,13 +10,15 @@ export type FlightType = {
     "time": TimeLike,
     "confirmed": boolean,
     "flightNumber": number,
-    "from": string, //string??
-    "to": string //string??
+    "from"?: string, //string??
+    "to"?: string //string??
     "aircraft": string,
     "economyPrice": number,
     "businessPrice"?: number,
     "firstClassPrice"?: number,
     "emptySeats"?: number,
+    "airportFromId": string,
+    "airportToId": string
 }
 
 type AirportType = {

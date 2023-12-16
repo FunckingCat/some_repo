@@ -23,15 +23,6 @@ type Props = {};
 const Schedules = (props: Props) => {
   const { flightStore } = useStore();
 
-  const airportOptions = () =>
-    flightStore.airports.map(
-      (el) =>
-        ({
-          value: el.IATACode, // el.id,
-          label: el.name,
-        } as ValueOptions)
-    );
-
   const currencyFormatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
@@ -46,18 +37,14 @@ const Schedules = (props: Props) => {
     {
       field: "from",
       headerName: "From",
-      type: "singleSelect",
-      valueOptions: airportOptions,
+      type: "string",
       width: 80,
-      // valueFormatter: airportFormatter
     },
     {
       field: "to",
       headerName: "To",
-      type: "singleSelect",
-      valueOptions: airportOptions,
+      type: "string",
       width: 80,
-      // valueFormatter: airportFormatter
     },
     {
       field: "flightNumber",
@@ -100,6 +87,10 @@ const Schedules = (props: Props) => {
     if (flightStore) {
       flightStore.getSchedules();
       flightStore.getAirports();
+      toJS(flightStore.schedules).forEach(s => {
+        s.from = flightStore.airportByID(s.airportFromId)?.IATACode
+        s.to = flightStore.airportByID(s.airportToId)?.IATACode
+      })
     }
 
     return;
@@ -161,7 +152,11 @@ const Schedules = (props: Props) => {
         </Button>
       </Box>
       <DataGrid
-        rows={toJS(flightStore.schedules)}
+        rows={toJS(flightStore.schedules).map(s => {
+          s.from = flightStore.airportByID(s.airportFromId)?.IATACode
+          s.to = flightStore.airportByID(s.airportToId)?.IATACode
+          return s;
+        })}
         columns={columns}
         autoHeight
         loading={flightStore.status === "pending"}
